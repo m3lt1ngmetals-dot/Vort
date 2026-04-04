@@ -23,7 +23,6 @@ const guildConfigSchema = new mongoose.Schema({
 
   logChannelId: { type: String },
 
-  // ✅ ONLY ONE moderation block
   moderation: {
     warnPunishments: [
       {
@@ -33,6 +32,7 @@ const guildConfigSchema = new mongoose.Schema({
     ],
     warnExpiry: { type: Number, default: 0 } // days (0 = never)
   }
-});
+
+}, { timestamps: true });
 
 module.exports = mongoose.model('GuildConfig', guildConfigSchema);
