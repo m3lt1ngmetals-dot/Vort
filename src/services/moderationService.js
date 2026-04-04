@@ -14,14 +14,18 @@ module.exports.warnUser = async (guild, user, moderator, reason) => {
 
   data.warnings.push({
     reason,
-    moderatorId: moderator.id
+    moderatorId: moderator.id,
+    date: Date.now()
   });
 
   const config = await GuildConfig.findOne({ guildId: guild.id });
 
-  // ✅ EXPIRY FILTER
-  if (config?.moderation?.warnExpiry > 0) {
-    const cutoff = Date.now() - (config.moderation.warnExpiry * 86400000);
+  const warnExpiry = config?.moderation?.warnExpiry ?? 0;
+  const punishments = config?.moderation?.warnPunishments ?? [];
+
+  // EXPIRY FILTER
+  if (warnExpiry > 0) {
+    const cutoff = Date.now() - (warnExpiry * 86400000);
     data.warnings = data.warnings.filter(w => w.date > cutoff);
   }
 
@@ -29,9 +33,7 @@ module.exports.warnUser = async (guild, user, moderator, reason) => {
 
   const warnCount = data.warnings.length;
 
-  // ✅ AUTO PUNISH
-  const punishments = config?.moderation?.warnPunishments || [];
-
+  // AUTO PUNISH
   for (const p of punishments) {
     if (warnCount === p.count) {
       const member = await guild.members.fetch(user.id).catch(() => null);
@@ -41,11 +43,20 @@ module.exports.warnUser = async (guild, user, moderator, reason) => {
         if (p.action === "timeout") {
           await member.timeout(10 * 60 * 1000);
         }
+
         if (p.action === "kick") {
           await member.kick();
         }
+
         if (p.action === "ban") {
           await member.ban();
         }
+
       } catch (err) {
-        console.log("Punishment error:", err
+        console.log("Punishment error:", err);
+      }
+    }
+  }
+
+  return warnCount;
+};
