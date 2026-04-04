@@ -28,3 +28,11 @@ module.exports = {
     message.reply("Setup complete.");
   }
 };
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+
+const row = new ActionRowBuilder().addComponents(
+  new ButtonBuilder()
+    .setCustomId('set_warns')
+    .setLabel('Set Warn Punishments')
+    .setStyle(ButtonStyle.Primary)
+);
