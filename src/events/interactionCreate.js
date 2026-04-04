@@ -63,3 +63,9 @@ module.exports = {
     }
   }
 };
+if (interaction.customId === "set_warns") {
+  await interaction.reply({
+    content: "Send format: 3 timeout, 5 kick, 7 ban",
+    ephemeral: true
+  });
+}
