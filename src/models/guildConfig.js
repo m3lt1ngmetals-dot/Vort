@@ -25,3 +25,11 @@ const guildConfigSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('GuildConfig', guildConfigSchema);
+moderation: {
+  warnPunishments: [
+    {
+      count: Number,
+      action: String
+    }
+  ]
+}
