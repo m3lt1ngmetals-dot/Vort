@@ -1,5 +1,3 @@
-const mongoose = require('mongoose');
-
 const guildConfigSchema = new mongoose.Schema({
   guildId: { type: String, required: true },
 
@@ -21,20 +19,19 @@ const guildConfigSchema = new mongoose.Schema({
     roles: { type: [String], default: [] }
   },
 
-  logChannelId: { type: String }
-});
+  logChannelId: { type: String },
 
-module.exports = mongoose.model('GuildConfig', guildConfigSchema);
-moderation: {
-  warnPunishments: [
-    {
-      count: Number,
-      action: String
-    }
-  ]
-}
-moderation: {
-  warnPunishments: [
+  // ✅ ADD THIS WHOLE BLOCK
+  moderation: {
+    warnPunishments: [
+      {
+        count: Number,
+        action: String
+      }
+    ],
+    warnExpiry: { type: Number, default: 0 } // days (0 = never)
+  }
+});  warnPunishments: [
     {
       count: Number,
       action: String
