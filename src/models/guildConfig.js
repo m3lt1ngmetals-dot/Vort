@@ -9,3 +9,7 @@ const schema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model("GuildConfig", schema);
+whitelist: {
+  users: { type: [String], default: [] },
+  roles: { type: [String], default: [] }
+}
