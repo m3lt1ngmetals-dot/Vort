@@ -33,3 +33,12 @@ moderation: {
     }
   ]
 }
+moderation: {
+  warnPunishments: [
+    {
+      count: Number,
+      action: String
+    }
+  ],
+  warnExpiry: { type: Number, default: 0 } // days (0 = never)
+}
