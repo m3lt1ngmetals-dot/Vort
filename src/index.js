@@ -1,9 +1,11 @@
-process.on('unhandledRejection', (err) => {
-  console.error('Unhandled Rejection:', err);
-});
 const { Client, GatewayIntentBits, Partials, Collection } = require('discord.js');
 const mongoose = require('mongoose');
 require('dotenv').config();
+
+// ✅ GLOBAL ERROR HANDLER
+process.on('unhandledRejection', (err) => {
+  console.error('Unhandled Rejection:', err);
+});
 
 const client = new Client({
   intents: Object.values(GatewayIntentBits),
