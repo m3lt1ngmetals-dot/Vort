@@ -7,11 +7,16 @@ module.exports = {
   async execute(channel) {
     const guild = channel.guild;
 
-    const logs = await guild.fetchAuditLogs({
-      limit: 1,
-      type: 12 // CHANNEL_DELETE
-    });
-
+    let logs;
+try {
+  logs = await guild.fetchAuditLogs({
+    limit: 1,
+    type: 12
+  });
+} catch (err) {
+  console.log("Failed to fetch audit logs:", err);
+  return;
+}
     const log = logs.entries.first();
     if (!log) return;
 
