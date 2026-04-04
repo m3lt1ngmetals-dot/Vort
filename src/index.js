@@ -7,9 +7,14 @@ process.on('unhandledRejection', (err) => {
   console.error('Unhandled Rejection:', err);
 });
 
-const client = new Client({
-  intents: Object.values(GatewayIntentBits),
-  partials: Object.values(Partials)
+;const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildMembers
+  ],
+  partials: [Partials.Channel]
 });
 
 client.commands = new Collection();
