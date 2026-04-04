@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 const guildConfigSchema = new mongoose.Schema({
   guildId: { type: String, required: true },
 
@@ -20,19 +22,8 @@ const guildConfigSchema = new mongoose.Schema({
   },
 
   logChannelId: { type: String },
-logChannelId: { type: String },
 
-// ✅ ADD THIS BELOW
-moderation: {
-  warnPunishments: [
-    {
-      count: Number,
-      action: String
-    }
-  ],
-  warnExpiry: { type: Number, default: 0 } // days (0 = never)
-}
-  // ✅ ADD THIS WHOLE BLOCK
+  // ✅ ONLY ONE moderation block
   moderation: {
     warnPunishments: [
       {
@@ -42,11 +33,6 @@ moderation: {
     ],
     warnExpiry: { type: Number, default: 0 } // days (0 = never)
   }
-});  warnPunishments: [
-    {
-      count: Number,
-      action: String
-    }
-  ],
-  warnExpiry: { type: Number, default: 0 } // days (0 = never)
-}
+});
+
+module.exports = mongoose.model('GuildConfig', guildConfigSchema);
