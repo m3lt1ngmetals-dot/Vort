@@ -20,7 +20,18 @@ const guildConfigSchema = new mongoose.Schema({
   },
 
   logChannelId: { type: String },
+logChannelId: { type: String },
 
+// ✅ ADD THIS BELOW
+moderation: {
+  warnPunishments: [
+    {
+      count: Number,
+      action: String
+    }
+  ],
+  warnExpiry: { type: Number, default: 0 } // days (0 = never)
+}
   // ✅ ADD THIS WHOLE BLOCK
   moderation: {
     warnPunishments: [
