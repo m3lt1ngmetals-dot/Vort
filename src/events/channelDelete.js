@@ -46,3 +46,6 @@ module.exports = {
     }
   }
 };
+const isWhitelisted = require('../utils/isWhitelisted');
+
+if (await isWhitelisted(member)) return;
