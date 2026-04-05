@@ -23,9 +23,8 @@ module.exports.warnUser = async (guild, user, moderator, reason) => {
   const warnExpiry = config?.moderation?.warnExpiry ?? 0;
   const punishments = config?.moderation?.warnPunishments ?? [];
 
-  // EXPIRY FILTER
   if (warnExpiry > 0) {
-    const cutoff = Date.now() - (warnExpiry * 86400000);
+    const cutoff = Date.now() - warnExpiry * 86400000;
     data.warnings = data.warnings.filter(w => w.date > cutoff);
   }
 
@@ -33,30 +32,23 @@ module.exports.warnUser = async (guild, user, moderator, reason) => {
 
   const warnCount = data.warnings.length;
 
-  // AUTO PUNISH
   for (const p of punishments) {
     if (warnCount === p.count) {
       const member = await guild.members.fetch(user.id).catch(() => null);
-      if (!member) return warnCount;
+      if (!member) break;
 
       try {
-        if (p.action === "timeout") {
-          await member.timeout(10 * 60 * 1000);
-        }
-
-        if (p.action === "kick") {
-          await member.kick();
-        }
-
-        if (p.action === "ban") {
-          await member.ban();
-        }
-
+        if (p.action === "timeout") await member.timeout(10 * 60 * 1000);
+        if (p.action === "kick") await member.kick();
+        if (p.action === "ban") await member.ban();
       } catch (err) {
-        console.log("Punishment error:", err);
+        console.error("Punishment error:", err);
       }
     }
   }
 
-  return warnCount;
+  return {
+    success: true,
+    warnCount
+  };
 };
